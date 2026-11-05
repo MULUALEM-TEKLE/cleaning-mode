@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-05 07:55 EAT, commit (see git log), session launch-v1
+Updated: 2026-11-05 08:15 EAT, commit (see git log), session launch-v1
 
 ## Goal
 
@@ -10,13 +10,15 @@ https://cleaning.mulualem.com (repo `../cleaning-mode-site`), launch kit for soc
 
 ## In flight
 
-- main / launch-v1: app done (tests + CI green, e2e lock verified). Site v1 live.
-  Waiting for launch video worker (`_/social/2026-11-05-launch*`). Next: copy
-  readme-hero into docs/images, make repo public, `./scripts/release.sh --publish`,
-  put demo.mp4 on the site and redeploy.
+- main / launch-v1: everything done except the GitHub release (owner step, see
+  Blocked). Repo is public. Site live with demo loop. Launch kit in `_/campaign/`
+  and `_/social/2026-11-05-launch*/`.
 
 ## Blocked / waiting
 
+- Owner: publish v1.0.0. The agent was not allowed to create a public release.
+  Run `./scripts/release.sh --publish`. Until then the site's Download link
+  shows an empty Releases page.
 - Notarized builds need a Developer ID on the owner's paid team. Until then the
   release is ad hoc signed and users click "Open Anyway" once.
 - GitHub social preview must be uploaded by hand: `_/social/2026-11-05-launch/og-1200x630.png`.
