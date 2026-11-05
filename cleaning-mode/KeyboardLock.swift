@@ -1,5 +1,6 @@
 import AppKit
 import Combine
+import IOKit.hidsystem
 
 /// Swallows every key press while the keyboard is being cleaned.
 final class KeyboardLock: ObservableObject {
@@ -12,6 +13,7 @@ final class KeyboardLock: ObservableObject {
     private var tap: CFMachPort?
     private var source: CFRunLoopSource?
     private var timer: Timer?
+    private var capsLockAtStart = false
     private let overlay = Overlay()
 
     /// Media and brightness keys arrive as NX_SYSDEFINED events.
@@ -58,6 +60,7 @@ final class KeyboardLock: ObservableObject {
         CFRunLoopAddSource(CFRunLoopGetMain(), source, .commonModes)
         CGEvent.tapEnable(tap: tap, enable: true)
 
+        capsLockAtStart = Self.capsLock()
         blockedPresses = 0
         endDate = Date().addingTimeInterval(seconds)
         timer = Timer.scheduledTimer(withTimeInterval: seconds, repeats: false) { [weak self] _ in
@@ -75,6 +78,7 @@ final class KeyboardLock: ObservableObject {
             CFMachPortInvalidate(tap)
         }
         if let source { CFRunLoopRemoveSource(CFRunLoopGetMain(), source, .commonModes) }
+        Self.capsLock(set: capsLockAtStart)
         timer = nil
         tap = nil
         source = nil
@@ -101,5 +105,22 @@ final class KeyboardLock: ObservableObject {
             break
         }
         return Unmanaged.passUnretained(event)
+    }
+
+    /// The Caps Lock state lives below the event tap, so a wipe can still toggle it.
+    /// The lock reads it at the start and puts it back at the end.
+    @discardableResult
+    private static func capsLock(set value: Bool? = nil) -> Bool {
+        let service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching(kIOHIDSystemClass))
+        defer { IOObjectRelease(service) }
+        var connect: io_connect_t = 0
+        guard IOServiceOpen(service, mach_task_self_, UInt32(kIOHIDParamConnectType), &connect) == KERN_SUCCESS else {
+            return false
+        }
+        defer { IOServiceClose(connect) }
+        if let value { IOHIDSetModifierLockState(connect, Int32(kIOHIDCapsLockState), value) }
+        var state = false
+        IOHIDGetModifierLockState(connect, Int32(kIOHIDCapsLockState), &state)
+        return state
     }
 }

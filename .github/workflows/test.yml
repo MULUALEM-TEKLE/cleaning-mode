@@ -1,0 +1,8 @@
+name: Test
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v5
+      - run: xcodebuild -project cleaning-mode.xcodeproj -scheme cleaning-mode -destination 'platform=macOS' CODE_SIGN_IDENTITY=- test
