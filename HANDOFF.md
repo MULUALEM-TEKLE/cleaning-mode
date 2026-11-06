@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-05 22:33 EAT, commit (see git log), session launch-posts
+Updated: 2026-11-06 07:54 EAT, commit (see git log), session launch-posts
 
 ## Goal
 
@@ -18,9 +18,6 @@ https://cleaning.mulualem.com (repo `../cleaning-mode-site`), launch kit for soc
 
 ## Blocked / waiting
 
-- GitHub social preview (Settings > Social preview): `_/social/2026-11-05-launch/og-1200x630.png`
-  (1200x630, 119 KB). Not set yet (`usesCustomOpenGraphImage` false). It changes a public page,
-  so it waits for the owner's yes. No API for it; the Chrome extension can do it.
 - Notarized builds need a "Developer ID Application" certificate on the owner's paid team.
   The keychain has none (2026-11-05). Do not use the "Apple Distribution: Neil Bisht" identity
   that is there. Until then the release is ad hoc signed and users click "Open Anyway" once.
@@ -39,6 +36,8 @@ https://cleaning.mulualem.com (repo `../cleaning-mode-site`), launch kit for soc
 - 2026-11-05: Launch audio remixed: 3 soft low-passed whooshes instead of 6 hissy ones
   (`_/social/2026-11-05-launch-video/raw/audio.py`). Owner approved the video.
   Evidence: `_/shots/2026-11-05-2150-launch-audio/cmp-whoosh-spectrum.png`.
+- 2026-11-06: GitHub social preview set from `_/social/2026-11-05-launch/og-1200x630.png`
+  (`usesCustomOpenGraphImage` true).
 - 2026-11-05: Do not claim "first" or "only": Cleanable (github.com/lerodic/Cleanable) is
   also an open-source Mac keyboard-cleaning app.
 - 2026-11-05: E2E: launch the built binary from a shell (inherits Accessibility trust),
